@@ -56,10 +56,10 @@ if (isset($_GET['username']) && (isset($_GET['password']))) {
             $error = "<h2 class='text-center'>user non renseigné</h2>";
         } elseif ($username && !$password) {
             $error = "<h2 class='text-center'>password non renseigné</h2>";
-        } elseif ($username != $user['username']) {
-            $error = "<h2 class='text-center'>user n'existe pas</h2>";
+            if ($username != $user['username']) {
+                $error = "<h2 class='text-center'>user n'existe pas</h2>";
+            }
         } else {
-
             if ($username == $user['username'] && $password == $user['password']) {
                 $content .= $secret;
             } elseif ($username == $user['username'] && $password != $user['password']) {
