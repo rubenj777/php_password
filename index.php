@@ -2,62 +2,68 @@
 
 $users = [
     [
-        "username" => "ruben",
-        "password" => "fromage"
+        "username" => "julien",
+        "password" => "lunettes"
     ],
     [
-        "username" => "majax",
+        "username" => "abdel",
         "password" => "peugeot"
     ],
     [
         "username" => "marie",
-        "password" => "bushido"
+        "password" => "ninjutsu"
     ]
 ];
 
 $username = false;
 $password = false;
 
-
-$secret = "bravo";
-
-$formulaire = "<form>
-        <div class='form-group'>
+$formulaire = "<form class='text-center'>
+        <div class='form-group mb-3'>
             <input type='text' name='username' placeholder='username'>
         </div>
-        <div class='form-group'>
+        <div class='form-group mb-3'>
             <input type='text' name='password' placeholder='password'>
         </div>
-        <div class='form-group'>
-            <button type='submit' class='btn btn-success'>GO</button>
+        <div class='form-group mb-3'>
+            <button type='submit' class='btn btn-success'>GO !</button>
+        </div>
+        </form>
+    <form>
+        <div class='form-group text-center'>
+        <button class='btn btn-info m-2' name='indice1'>indice 1</button>
+        <button class='btn btn-info m-2' name='indice2'>indice 2</button>
+        <button class='btn btn-info m-2' name='indice3'>indice 3</button>
         </div>
     </form>";
 
+$indice1 = "<p class='text-center'>username:<br>il est parfois salé<br>password :<br>il en porte sur le nez</p>";
+$indice2 = "<p class='text-center'>username:<br>à ne pas confondre avec Hedi<br>password:<br>la marque de sa nouvelle voiture</p>";
+$indice3 = "<p class='text-center'>username:<br>cheveux bleus<br>password:<br>elle en maîtrise l'art</p>";
 
-$secret = "";
 
 $content = $formulaire;
-
+$error = "";
 
 if (isset($_GET['username']) && (isset($_GET['password']))) {
     $username = $_GET['username'];
     $password = $_GET['password'];
     foreach ($users as $user) {
+        $secret = "<h1 class='text-center'>bienvenue, " . $user['username'] . " !</h1>";
         if (!$username && !$password) {
-            $content .= "<h2>aucun des champs n'est rempli</h2>";
-        } elseif ($username && !$password) {
-            $content .= "<h2>password non renseigné</h2>";
-            if ($username != $user['username']) {
-                $content .= "<h2>user existe pas</h2>";
-            }
+            $error = "<h2 class='text-center'>aucun des champs n'est rempli</h2>";
         } elseif (!$username && $password) {
-            $content .= "<h2>user non renseigné</h2>";
+            $error = "<h2 class='text-center'>user non renseigné</h2>";
+        } elseif ($username && !$password) {
+            $error = "<h2 class='text-center'>password non renseigné</h2>";
+        } elseif ($username != $user['username']) {
+            $error = "<h2 class='text-center'>user n'existe pas</h2>";
         } else {
 
             if ($username == $user['username'] && $password == $user['password']) {
-                $content .= "<h2>ok</h2>";
-            } else {
-                $content .= "<h2>pas ok</h2>";
+                $content .= $secret;
+            } elseif ($username == $user['username'] && $password != $user['password']) {
+                $error = "<h2 class='text-center'>le mot de passe est incorrect</h2>";
             }
         }
     }
@@ -103,7 +109,21 @@ if (isset($_GET['username']) && (isset($_GET['password']))) {
 
 
     <div class="container">
-        <?= $content ?>
+        <?php
+
+        echo $content;
+        echo $error;
+        if (isset($_GET['indice1'])) {
+            echo $indice1;
+        };
+        if (isset($_GET['indice2'])) {
+            echo $indice2;
+        };
+        if (isset($_GET['indice3'])) {
+            echo $indice3;
+        };
+
+        ?>
     </div>
 </body>
 
