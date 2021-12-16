@@ -12,11 +12,18 @@ $users = [
     [
         "username" => "marie",
         "password" => "ninjutsu"
+    ],
+    [
+        "username" => "gislain",
+        "password" => "quinoa"
+    ],
+    [
+        "username" => "thomas",
+        "password" => "fromage"
     ]
 ];
 
-$username = false;
-$password = false;
+
 
 $formulaire = "<form class='text-center'>
         <div class='form-group mb-3'>
@@ -31,43 +38,55 @@ $formulaire = "<form class='text-center'>
         </form>
     <form>
         <div class='form-group text-center'>
-        <button class='btn btn-info m-2' name='indice1'>indice 1</button>
-        <button class='btn btn-info m-2' name='indice2'>indice 2</button>
-        <button class='btn btn-info m-2' name='indice3'>indice 3</button>
+        <button class='btn btn-info m-2' name='personne1'>personne 1</button>
+        <button class='btn btn-info m-2' name='personne2'>personne 2</button>
+        <button class='btn btn-info m-2' name='personne3'>personne 3</button>
+        <button class='btn btn-info m-2' name='personne4'>personne 4</button>
+        <button class='btn btn-info m-2' name='personne5'>personne 5</button>
         </div>
     </form>";
 
-$indice1 = "<p class='text-center'>username:<br>il est parfois salé<br>password :<br>il en porte sur le nez</p>";
-$indice2 = "<p class='text-center'>username:<br>à ne pas confondre avec Hedi<br>password:<br>la marque de sa nouvelle voiture</p>";
-$indice3 = "<p class='text-center'>username:<br>cheveux bleus<br>password:<br>elle en maîtrise l'art</p>";
+$personne1 = "<p class='text-center'>username:<br>il est parfois salé<br>password :<br>il en porte sur le nez</p>";
+$personne2 = "<p class='text-center'>username:<br>à ne pas confondre avec Hedi<br>password:<br>la marque de sa nouvelle voiture</p>";
+$personne3 = "<p class='text-center'>username:<br>cheveux bleus<br>password:<br>elle en maîtrise l'art</p>";
+$personne4 = "<p class='text-center'>username:<br>aime les gâteaux<br>password:<br>ressemble à son nom de famille</p>";
+$personne5 = "<p class='text-center'>username:<br>adore les comics<br>password:<br>mange beaucoup de plats à base de...</p>";
 
 
+$form = true;
 $content = $formulaire;
 $error = "";
 
-if (isset($_GET['username']) && (isset($_GET['password']))) {
-    $username = $_GET['username'];
-    $password = $_GET['password'];
+$emptyField = "<h2 class='text-center'>veuillez renseigner tous les champs</h2>";
+$unknownUser = "<h2 class='text-center'>user inconnu</h2>";
+$wrongPass = "<h2 class='text-center'>mauvais password</h2>";
+
+
+
+if ((isset($_GET['username']) && isset($_GET['password'])) && (!empty($_GET['username']) && !empty($_GET['password']))) {
+    $userExists = false;
+    $password;
     foreach ($users as $user) {
-        $secret = "<h1 class='text-center'>bienvenue, " . $user['username'] . " !</h1>";
-        if (!$username && !$password) {
-            $error = "<h2 class='text-center'>aucun des champs n'est rempli</h2>";
-        } elseif (!$username && $password) {
-            $error = "<h2 class='text-center'>user non renseigné</h2>";
-        } elseif ($username && !$password) {
-            $error = "<h2 class='text-center'>password non renseigné</h2>";
-            if ($username != $user['username']) {
-                $error = "<h2 class='text-center'>user n'existe pas</h2>";
-            }
-        } else {
-            if ($username == $user['username'] && $password == $user['password']) {
-                $content .= $secret;
-            } elseif ($username == $user['username'] && $password != $user['password']) {
-                $error = "<h2 class='text-center'>le mot de passe est incorrect</h2>";
-            }
+        if ($_GET['username'] == $user['username']) {
+            $secret = "<h2 class='text-center'>salut " . $user['username'] . " !</h2>";
+            $userExists = true;
+            $password = $user['password'];
         }
     }
+    if ($userExists) {
+        if ($password == $_GET['password']) {
+            $form = false;
+        } else {
+            $error = $wrongPass;
+        }
+    } else {
+        $error = $unknownUser;
+    }
+} else {
+    $error = $emptyField;
 }
+
+$form ? $content = $formulaire : $content = $secret;
 
 ?>
 
@@ -113,14 +132,20 @@ if (isset($_GET['username']) && (isset($_GET['password']))) {
 
         echo $content;
         echo $error;
-        if (isset($_GET['indice1'])) {
-            echo $indice1;
+        if (isset($_GET['personne1'])) {
+            echo $personne1;
         };
-        if (isset($_GET['indice2'])) {
-            echo $indice2;
+        if (isset($_GET['personne2'])) {
+            echo $personne2;
         };
-        if (isset($_GET['indice3'])) {
-            echo $indice3;
+        if (isset($_GET['personne3'])) {
+            echo $personne3;
+        };
+        if (isset($_GET['personne4'])) {
+            echo $personne4;
+        };
+        if (isset($_GET['personne5'])) {
+            echo $personne5;
         };
 
         ?>
