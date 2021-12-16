@@ -3,30 +3,31 @@
 $users = [
     [
         "username" => "julien",
-        "password" => "lunettes"
+        "password" => "f4585a3138607b53b00eb8cf0b1a27d1"
     ],
     [
         "username" => "abdel",
-        "password" => "peugeot"
+        "password" => "9f6cf82deb99289e14aea9dcc24e54cb"
     ],
     [
         "username" => "marie",
-        "password" => "ninjutsu"
+        "password" => "3e68052c6a8d5ebdf5f5b98c805b508f"
     ],
     [
         "username" => "gislain",
-        "password" => "quinoa"
+        "password" => "f8d5337cb3047dc21f6342c6f21ca0a4"
     ],
     [
         "username" => "thomas",
-        "password" => "fromage"
+        "password" => "3f0cff1d3cc4642e15835d7304d453cc"
     ]
 ];
 
-
+$salt = "45sdfç6za_r-6s*dq!66pqémmà)894fsd;f";
 
 $formulaire = "<form class='text-center'>
-        <div class='form-group mb-3'>
+<div class='form-group mb-3'>
+
             <input type='text' name='username' placeholder='username'>
         </div>
         <div class='form-group mb-3'>
@@ -70,11 +71,11 @@ if ((isset($_GET['username']) && isset($_GET['password'])) && (!empty($_GET['use
         if ($_GET['username'] == $user['username']) {
             $secret = "<h2 class='text-center'>salut " . $user['username'] . " !</h2>";
             $userExists = true;
-            $password = $user['password'];
+            $password = ($user['password'] . $salt);
         }
     }
     if ($userExists) {
-        if ($password == $_GET['password']) {
+        if ($password == md5($_GET['password']) . $salt) {
             $form = false;
         } else {
             $error = $wrongPass;
